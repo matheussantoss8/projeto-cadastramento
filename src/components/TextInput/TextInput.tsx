@@ -1,3 +1,5 @@
+// src/components/TextInput/TextInput.tsx
+
 "use client";
 
 import React from "react";
