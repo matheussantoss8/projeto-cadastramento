@@ -1,25 +1,34 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import { CiSearch } from "react-icons/ci";
 
 interface TextInputProps {
   label?: string;
   type?: string;
-  value: string;
-  onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
   placeholder?: string;
+  value?: string;
   className?: string;
+  onInputChange?: (value: string) => void;
 }
 
 const TextInput: React.FC<TextInputProps> = ({
   label,
   type = "text",
-  value,
-  onChange,
   placeholder = "",
   className = "",
+  onInputChange,
 }) => {
+  const [value, setValue] = useState<string>("");
+
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const newValue = event.target.value;
+    setValue(newValue);
+    if (onInputChange) {
+      onInputChange(newValue);
+    }
+  };
+
   return (
     <div className={`mb-4 ${className}`}>
       {label && (
@@ -31,7 +40,7 @@ const TextInput: React.FC<TextInputProps> = ({
         <input
           type={type}
           value={value}
-          onChange={onChange}
+          onChange={handleChange}
           placeholder={placeholder}
           className="shadow appearance-none border rounded w-full py-2 px-3 pl-10 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
         />
