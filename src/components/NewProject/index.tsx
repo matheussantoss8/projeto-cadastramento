@@ -17,8 +17,9 @@ const CreateProjectButton = () => {
     );
 
     const newProject = {
+      id: existingProjects.length + 1,
       name: inputValue,
-      date: moment().format("YYYY-MM-DD"), 
+      date: moment().format("YYYY-MM-DD"),
     };
 
     existingProjects.push(newProject);
