@@ -2,12 +2,11 @@
 
 import React, { useState } from "react";
 import Image from "next/image";
-import Link from "next/link";
 import TextInput from "../TextInput/TextInput";
 import { FiCalendar } from "react-icons/fi";
 import { HiOutlineFolderOpen } from "react-icons/hi";
 import { IoIosNotificationsOutline } from "react-icons/io";
-import { useRouter } from "next/navigation"; // Importa o hook useRouter
+import { useRouter } from "next/navigation";
 
 const SideMenu: React.FC = () => {
   const handleInputChange = (value: string) => {
@@ -25,11 +24,9 @@ const SideMenu: React.FC = () => {
 
   const router = useRouter();
 
-  const handleProjectClick = (project: any) => {
+  const handleProjectClick = (project: { id: number }) => {
     router.push(`/meusprojetos?id=${project.id}`);
   };
-
-  console.log(dataArray, "aqi");
 
   return (
     <div className="fixed top-0 left-0 h-full p-4 w-333 shadow-2xl border-4 border-white">

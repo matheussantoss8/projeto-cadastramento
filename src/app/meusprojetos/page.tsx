@@ -1,34 +1,67 @@
-"use client"; // Adicione esta linha
+"use client";
 
 import SideMenu from "@/components/Menu";
-import ProjectDetailsGrid from "@/components/teste";
+import ProjectDetailsGrid from "@/app/meusprojetos/components/ProjectDetailsGrid";
 import React, { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
+
+interface Session {
+  name: string;
+  tasks: string[];
+}
+
+interface Project {
+  id: number;
+  name: string;
+  date: string;
+  session?: Session[];
+}
 
 const MeusProjetos: React.FC = () => {
   const searchParams = useSearchParams();
   const projectId = searchParams.get("id");
-  const [project, setProject] = useState(null);
-
-  console.log(searchParams, "meusprojetos");
+  const [selectedProject, setSelectedProject] = useState<Project | null>(null);
 
   useEffect(() => {
     if (projectId) {
-      const projects = JSON.parse(localStorage.getItem("projects") || "[]");
+      const idAsNumber = parseInt(projectId, 10);
+      const projects: Project[] = JSON.parse(
+        localStorage.getItem("projects") || "[]"
+      );
       const selectedProject = projects.find(
-        (p: { id: string }) => p.id === projectId
-      ); // Busca o projeto pelo ID
-      setProject(selectedProject);
+        (p: Project) => p.id === idAsNumber
+      );
+
+      if (selectedProject) {
+        selectedProject.session = selectedProject.session?.map((session) =>
+          typeof session === "string" ? { name: session, tasks: [] } : session
+        );
+        setSelectedProject(selectedProject);
+      }
     }
   }, [projectId]);
+  
+  const handleUpdateProject = (updatedProject: Project) => {
+    setSelectedProject(updatedProject);
+
+    const projects: Project[] = JSON.parse(
+      localStorage.getItem("projects") || "[]"
+    );
+    const updatedProjects = projects.map((p: Project) =>
+      p.id === updatedProject.id ? updatedProject : p
+    );
+    localStorage.setItem("projects", JSON.stringify(updatedProjects));
+  };
 
   return (
     <div className="flex">
       <SideMenu />
       <div className="flex-1 ml-64 p-4">
         <div className="flex items-center justify-center min-h-screen">
-          <ProjectDetailsGrid project={project} />
-          {/* Passa o projeto para o componente */}
+          <ProjectDetailsGrid
+            project={selectedProject}
+            onUpdateProject={handleUpdateProject}
+          />
         </div>
       </div>
     </div>

@@ -13,7 +13,7 @@ export default function Home() {
     console.log("Input Value:", value);
   };
 
-  console.log("projeto =>", localStorage.getItem("projectName"));
+  // console.log("projeto =>", localStorage.getItem("projectName"));
 
   return (
     <div className="flex">
